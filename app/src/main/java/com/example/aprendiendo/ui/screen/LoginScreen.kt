@@ -24,29 +24,23 @@ fun LoginScreen(
 ) {
     val estado by viewModel.estado.collectAsState()
     val context = LocalContext.current
-
     Pantalla(titulo = "MPAZ PRO 1.º") {
         Text("Apoyo didáctico · 1.º Básico", color = Gris, fontSize = 17.sp)
-
         // Campo correo
         CampoTexto(estado.correo, viewModel::onCorreoChange, "Correo electrónico", estado.errores.correo)
-
         // Campo clave
         CampoTexto(estado.clave, viewModel::onClaveChange, "Contraseña", estado.errores.clave, esClave = true)
-
         // Mensaje animado si el correo o la clave no existen
         AnimatedVisibility(visible = estado.mensaje != null) {
             Text(estado.mensaje ?: "", color = Rojo)
         }
-
-        // Mientras carga: ruedita (CircularProgressIndicator)
+        // Mientras carga
         if (estado.cargando) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 CircularProgressIndicator()
                 Text("Cargando datos...", color = Gris)
             }
         }
-
         // Botón: ingresar
         BotonPrincipal("Ingresar", habilitado = !estado.cargando) {
             viewModel.login { perfil ->
@@ -54,13 +48,10 @@ fun LoginScreen(
                 navController.navigate(rutaInicio(perfil)) { popUpTo("login") { inclusive = true } }
             }
         }
-
         TextButton(onClick = {
             viewModel.limpiar()
             navController.navigate("registro")
         }) { Text("¿No tienes cuenta? Regístrate") }
-
-        // Formulario sin base de datos todavía (pauta, punto 3)
         TextButton(onClick = {
             Toast.makeText(context, "Para una futura actualización", Toast.LENGTH_SHORT).show()
         }) { Text("¿Olvidaste tu contraseña?") }
@@ -70,7 +61,7 @@ fun LoginScreen(
     }
 }
 
-// Pantalla de inicio según el perfil
+// Pantalla de inicio
 fun rutaInicio(perfil: String): String = when (perfil) {
     "Docente" -> "docente"
     "UTP" -> "utp"

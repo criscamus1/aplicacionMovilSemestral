@@ -39,12 +39,12 @@ class MainActivity : ComponentActivity() {
 
                 val navController = rememberNavController()
 
-                // Aquí creamos los ViewModel una sola vez (se comparten entre pantallas)
+                // ViewModel
                 val usuarioViewModel: UsuarioViewModel = viewModel()
                 val pruebaViewModel: PruebaViewModel = viewModel()
                 val usuario by usuarioViewModel.estado.collectAsState()
 
-                // Ruta en la que estamos ahora (para esconder la barra en login y registro)
+                // Ruta en la que estamos ahora y donde se usa para esconder la barra en login y registro
                 val rutaActual = navController.currentBackStackEntryAsState().value?.destination?.route
                 val mostrarBarra = rutaActual != "login" && rutaActual != "registro"
 
@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
                                     Arrangement.SpaceBetween,
                                     Alignment.CenterVertically
                                 ) {
-                                    // Botón: volver al inicio del perfil
+                                    // Botón de volver
                                     IconButton(onClick = { navController.popBackStack(rutaInicio(usuario.perfilSesion), inclusive = false) }) {
                                         Icon(
                                             imageVector = Icons.Default.Home,
@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
                                         )
                                     }
 
-                                    // Botón: cerrar sesión
+                                    // Botón de cerrar sesion
                                     IconButton(onClick = {
                                         usuarioViewModel.limpiar()
                                         pruebaViewModel.limpiar()

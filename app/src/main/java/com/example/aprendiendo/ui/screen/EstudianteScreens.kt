@@ -20,7 +20,7 @@ import com.example.aprendiendo.model.asignaturas
 import com.example.aprendiendo.viewmodel.PruebaViewModel
 import com.example.aprendiendo.viewmodel.UsuarioViewModel
 
-// ---------------- INICIO: las 4 asignaturas con su puntaje ----------------
+// asignaturas con su puntaje
 @Composable
 fun InicioScreen(
     navController: NavController,
@@ -29,7 +29,6 @@ fun InicioScreen(
 ) {
     val usuario by usuarioViewModel.estado.collectAsState()
     val prueba by pruebaViewModel.estado.collectAsState()
-
     Pantalla(titulo = "¡Hola, ${usuario.nombreSesion.substringBefore(" ")}!") {
         Text("Elige una asignatura", color = Gris, fontSize = 18.sp)
         asignaturas.forEachIndexed { i, asignatura ->
@@ -42,7 +41,7 @@ fun InicioScreen(
     }
 }
 
-// ---------------- CONTENIDO: objetivos + explicación + ejemplo ----------------
+// los objetivos mas ejemplo
 @Composable
 fun ContenidoScreen(navController: NavController, indice: Int) {
     val asignatura = asignaturas[indice]
@@ -61,22 +60,18 @@ fun ContenidoScreen(navController: NavController, indice: Int) {
     }
 }
 
-// ---------------- PRUEBA: 3 preguntas ----------------
+// 3 preguntas
 @Composable
 fun PruebaScreen(navController: NavController, viewModel: PruebaViewModel, indice: Int) {
     val estado by viewModel.estado.collectAsState()
     val asignatura = asignaturas[indice]
-
-    // Al entrar, la prueba empieza sin respuestas
+    //  la prueba empieza sin respuestas
     LaunchedEffect(indice) { viewModel.reiniciar() }
-
     Pantalla(titulo = asignatura.nombre, onVolver = { navController.popBackStack() }) {
         Text("Prueba final · ${asignatura.oa}", color = Gris)
-
         asignatura.preguntas.forEachIndexed { n, pregunta ->
             Tarjeta {
                 Text("${n + 1}. ${pregunta.texto}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                // Alternativas largas: una debajo de otra. Cortas: en fila.
                 if (pregunta.opciones.any { it.length > 8 }) {
                     pregunta.opciones.forEach { op ->
                         Opcion(op, estado.elegidas[n] == op, Modifier.fillMaxWidth()) { viewModel.elegir(n, op) }
@@ -90,23 +85,20 @@ fun PruebaScreen(navController: NavController, viewModel: PruebaViewModel, indic
                 }
             }
         }
-
-        // Se activa solo cuando respondió todas
+        // Se activara solo cuando se responda todas
         BotonPrincipal("Responder", habilitado = estado.elegidas.size == asignatura.preguntas.size) {
             viewModel.guardarPuntaje(indice)
             navController.navigate("resultado/$indice") { popUpTo("prueba/{indice}") { inclusive = true } }
         }
     }
 }
-
-// ---------------- RESULTADO: corrección automática ----------------
+//corrección automática
 @Composable
 fun ResultadoScreen(navController: NavController, viewModel: PruebaViewModel, indice: Int) {
     val estado by viewModel.estado.collectAsState()
     val asignatura = asignaturas[indice]
     val buenas = viewModel.correctas(indice)
     val total = asignatura.preguntas.size
-
     Pantalla(titulo = "Resultado · ${asignatura.nombre}") {
         Text(
             "$buenas/$total",
@@ -119,7 +111,6 @@ fun ResultadoScreen(navController: NavController, viewModel: PruebaViewModel, in
             modifier = Modifier.align(Alignment.CenterHorizontally),
             fontSize = 28.sp, fontWeight = FontWeight.Bold
         )
-
         asignatura.preguntas.forEachIndexed { n, pregunta ->
             val elegida = estado.elegidas[n] ?: ""
             val bien = elegida == pregunta.correcta
@@ -131,7 +122,6 @@ fun ResultadoScreen(navController: NavController, viewModel: PruebaViewModel, in
                 )
             }
         }
-
         if (buenas < total) {
             OutlinedButton(
                 onClick = { navController.navigate("prueba/$indice") { popUpTo("resultado/{indice}") { inclusive = true } } },

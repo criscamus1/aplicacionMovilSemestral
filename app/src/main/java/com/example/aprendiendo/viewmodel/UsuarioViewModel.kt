@@ -13,18 +13,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// AndroidViewModel porque Room necesita el contexto de la aplicación
 class UsuarioViewModel(application: Application) : AndroidViewModel(application) {
-
-    // Acceso a la tabla usuarios (Room)
+    // Acceso a la tabla usuarios
     private val dao = AppDatabase.obtener(application).usuarioDao()
-
-    // Estado interno mutable
     private val _estado = MutableStateFlow(UsuarioUiState())
-
     // Estado expuesto para la UI
     val estado: StateFlow<UsuarioUiState> = _estado
-
     init {
         // Al iniciar, lanzamos la creación de las cuentas de prueba (si ya existen, se ignoran)
         viewModelScope.launch {
@@ -33,27 +27,22 @@ class UsuarioViewModel(application: Application) : AndroidViewModel(application)
             dao.registrar(Usuario("utp@prueba.com", "Jefatura UTP", "123456", "UTP"))
         }
     }
-
-    // Actualiza el campo nombre y limpia su error
+    // Actualiza la interfaz nombre y limpia si hay un error
     fun onNombreChange(valor: String) {
         _estado.update { it.copy(nombre = valor, errores = it.errores.copy(nombre = null)) }
     }
-
     // Actualiza el campo correo
     fun onCorreoChange(valor: String) {
         _estado.update { it.copy(correo = valor, errores = it.errores.copy(correo = null), mensaje = null) }
     }
-
     // Actualiza el campo clave
     fun onClaveChange(valor: String) {
         _estado.update { it.copy(clave = valor, errores = it.errores.copy(clave = null), mensaje = null) }
     }
-
-    // Actualiza el perfil elegido
+    // para actualizar el perfil
     fun onPerfilChange(valor: String) {
         _estado.update { it.copy(perfil = valor) }
     }
-
     // Validación global del formulario (conNombre = true en registro)
     fun validarFormulario(conNombre: Boolean): Boolean {
         val estadoActual = _estado.value
@@ -66,8 +55,7 @@ class UsuarioViewModel(application: Application) : AndroidViewModel(application)
         _estado.update { it.copy(errores = errores) }
         return !hayErrores
     }
-
-    // LOGIN: simula una carga (como cargarDatos) y busca el usuario en Room
+    // LOGIN si hay cuenta va la validacion
     fun login(onExito: (perfil: String) -> Unit) {
         if (!validarFormulario(conNombre = false)) return
         viewModelScope.launch {
@@ -84,13 +72,10 @@ class UsuarioViewModel(application: Application) : AndroidViewModel(application)
             }
         }
     }
-
-    // Función con tiempo de carga: simula una solicitud de datos a una API
     private suspend fun cargarDatos() {
         delay(1500L)
     }
-
-    // REGISTRO: guarda el usuario en Room
+    // REGISTRO: guarda el usuario
     fun registrar(onExito: () -> Unit) {
         if (!validarFormulario(conNombre = true)) return
         val e = _estado.value
@@ -104,7 +89,6 @@ class UsuarioViewModel(application: Application) : AndroidViewModel(application)
             }
         }
     }
-
     // Limpia el formulario (al ir a registro o al cerrar sesión)
     fun limpiar() {
         _estado.value = UsuarioUiState()

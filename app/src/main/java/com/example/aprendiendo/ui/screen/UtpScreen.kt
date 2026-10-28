@@ -8,7 +8,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.aprendiendo.model.asignaturas
 
-// JEFATURA UTP: ve la lista de contenidos y su estado
+// JEFATURA UTP solo ve la lista de contenidos y su estado
 @Composable
 fun UtpScreen() {
     Pantalla(titulo = "Jefatura UTP") {

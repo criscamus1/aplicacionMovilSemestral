@@ -38,9 +38,8 @@ fun MpazTema(content: @Composable () -> Unit) {
     MaterialTheme(colorScheme = lightColorScheme(primary = Azul), content = content)
 }
 
-// ---------------- PIEZAS QUE SE REPITEN EN TODAS LAS PANTALLAS ----------------
-
-// Esqueleto de pantalla: título (con flecha para volver) + contenido que se puede bajar
+//  PIEZAS QUE SE REPITEN EN TODAS LAS PANTALLAS
+// Estructura de la pantalla título (con flecha para volver) + contenido que se puede bajar
 @Composable
 fun Pantalla(
     titulo: String,
@@ -65,7 +64,7 @@ fun Pantalla(
     }
 }
 
-// Campo de texto con su error debajo (isError + supportingText, como en la guía 11)
+// Campo de texto con su error  isError
 @Composable
 fun CampoTexto(
     valor: String,
@@ -101,7 +100,7 @@ fun BotonPrincipal(texto: String, habilitado: Boolean = true, onClick: () -> Uni
     }
 }
 
-// Caja redondeada de color. Si recibe onClick, se puede tocar.
+// Caja redondeada de color. Si recibe onClick, se puede seleccionar
 @Composable
 fun Tarjeta(
     color: Color = FondoGris,
@@ -113,7 +112,7 @@ fun Tarjeta(
     Column(modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp), content = contenido)
 }
 
-// Botón de alternativa: cambia de color con animación al elegirlo (guía 12)
+// Botón de alternativa: cambia de color
 @Composable
 fun Opcion(texto: String, elegida: Boolean, modifier: Modifier, onClick: () -> Unit) {
     val colorFondo by animateColorAsState(

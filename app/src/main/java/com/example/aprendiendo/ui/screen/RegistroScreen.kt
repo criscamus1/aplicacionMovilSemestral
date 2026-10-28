@@ -23,12 +23,10 @@ fun RegistroScreen(
     val context = LocalContext.current
 
     Pantalla(titulo = "Crear cuenta", onVolver = { navController.popBackStack() }) {
-
         // Campos del formulario (cada uno muestra su error debajo)
         CampoTexto(estado.nombre, viewModel::onNombreChange, "Nombre", estado.errores.nombre)
         CampoTexto(estado.correo, viewModel::onCorreoChange, "Correo electrónico", estado.errores.correo)
         CampoTexto(estado.clave, viewModel::onClaveChange, "Contraseña", estado.errores.clave, esClave = true)
-
         // Elegir perfil
         Text("Perfil", fontWeight = FontWeight.Bold)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -37,7 +35,7 @@ fun RegistroScreen(
             }
         }
 
-        // Botón: registrar (si todo es válido, guarda en Room y vuelve al login)
+        // Botón de registrar si salio bien se podria ingresar
         BotonPrincipal("Registrarme") {
             viewModel.registrar {
                 Toast.makeText(context, "Cuenta creada. Ya puedes ingresar.", Toast.LENGTH_SHORT).show()

@@ -12,7 +12,6 @@ import com.example.aprendiendo.model.asignaturas
 import com.example.aprendiendo.model.puntajesCurso
 import com.example.aprendiendo.viewmodel.UsuarioViewModel
 
-// DOCENTE: ve el contenido y quién sacó qué puntaje (datos de ejemplo)
 @Composable
 fun DocenteScreen(viewModel: UsuarioViewModel) {
     val estado by viewModel.estado.collectAsState()
@@ -29,7 +28,6 @@ fun DocenteScreen(viewModel: UsuarioViewModel) {
                 Text(asignatura.explicacion)
             }
         }
-
         // Puntajes del curso
         Text("Puntajes · Matemáticas", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         puntajesCurso.forEach { (nombre, nota) ->
