@@ -5,21 +5,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.aprendiendo.model.actividades
 import com.example.aprendiendo.model.asignaturas
 
-// JEFATURA UTP solo ve la lista de contenidos y su estado
+// UTP: crea actividades y revisa las de los docentes
 @Composable
-fun UtpScreen() {
+fun UtpScreen(navController: NavController) {
     Pantalla(titulo = "Jefatura UTP") {
-        Text("Lista de contenidos · 1.º Básico", color = Gris)
-        asignaturas.forEach { asignatura ->
-            Tarjeta {
+        BotonPrincipal("➕ Crear actividad") { navController.navigate("actividad") }
+        Text("Actividades", fontWeight = FontWeight.Bold)
+        actividades.forEachIndexed { i, actividad ->
+            Tarjeta(onClick = { navController.navigate("revisar/$i") }) {
                 Row {
-                    Text("${asignatura.emoji} ${asignatura.nombre}", modifier = Modifier.weight(1f), fontWeight = FontWeight.Bold)
-                    Text(asignatura.estadoUtp, color = Azul, fontWeight = FontWeight.Bold)
+                    Text(actividad.titulo, Modifier.weight(1f), fontWeight = FontWeight.Bold)
+                    EtiquetaEstado(actividad.estado)
                 }
-                Text("${asignatura.oa} · Prof. Andrea R.", color = Gris, fontSize = 13.sp)
+                Text("${asignaturas[actividad.asignatura].nombre} · Unidad ${actividad.unidad}", color = Gris)
             }
         }
     }

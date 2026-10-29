@@ -8,18 +8,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.aprendiendo.model.asignaturas
 import com.example.aprendiendo.model.puntajesCurso
 import com.example.aprendiendo.viewmodel.UsuarioViewModel
 
+// Docente y tu funcion
 @Composable
-fun DocenteScreen(viewModel: UsuarioViewModel) {
+fun DocenteScreen(navController: NavController, viewModel: UsuarioViewModel) {
     val estado by viewModel.estado.collectAsState()
-
     Pantalla(titulo = "Hola, Prof. ${estado.nombreSesion.substringBefore(" ")}") {
         Text("1.º Básico A · datos ficticios", color = Gris)
-
-        // Contenido de cada asignatura
+        // formulario de crear actividad
+        BotonPrincipal("➕ Crear actividad") { navController.navigate("actividad") }
+        // Contenido de asignatura
         Text("Contenido", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         asignaturas.forEach { asignatura ->
             Tarjeta(asignatura.color) {
@@ -28,7 +30,6 @@ fun DocenteScreen(viewModel: UsuarioViewModel) {
                 Text(asignatura.explicacion)
             }
         }
-        // Puntajes del curso
         Text("Puntajes · Matemáticas", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         puntajesCurso.forEach { (nombre, nota) ->
             Tarjeta {

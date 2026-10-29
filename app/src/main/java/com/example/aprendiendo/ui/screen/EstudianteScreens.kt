@@ -20,7 +20,7 @@ import com.example.aprendiendo.model.asignaturas
 import com.example.aprendiendo.viewmodel.PruebaViewModel
 import com.example.aprendiendo.viewmodel.UsuarioViewModel
 
-// asignaturas con su puntaje
+// asignaturas y puntaje
 @Composable
 fun InicioScreen(
     navController: NavController,
@@ -32,8 +32,7 @@ fun InicioScreen(
     Pantalla(titulo = "¡Hola, ${usuario.nombreSesion.substringBefore(" ")}!") {
         Text("Elige una asignatura", color = Gris, fontSize = 18.sp)
         asignaturas.forEachIndexed { i, asignatura ->
-            Tarjeta(asignatura.color, onClick = { navController.navigate("contenido/$i") }) {
-                Text("${asignatura.emoji}  ${asignatura.nombre}", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Tarjeta(asignatura.color, onClick = { navController.navigate("unidades/$i") }) {                Text("${asignatura.emoji}  ${asignatura.nombre}", fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 val nota = prueba.puntajes[i]
                 Text(if (nota == null) "Sin prueba" else "Mi avance: $nota/3", color = Gris)
             }
@@ -49,10 +48,8 @@ fun ContenidoScreen(navController: NavController, indice: Int) {
     Pantalla(titulo = "${asignatura.emoji} ${asignatura.nombre}", onVolver = { navController.popBackStack() }) {
         Text("Objetivos asignados por tu profesor(a)", color = Gris)
         asignatura.objetivos.forEach { Text(it, fontSize = 17.sp, fontWeight = FontWeight.Bold) }
-
         Text(asignatura.oa, color = Gris, fontWeight = FontWeight.Bold)
         Text(asignatura.explicacion, fontSize = 20.sp, lineHeight = 28.sp)
-
         Text("Ejemplo guiado", fontWeight = FontWeight.Bold)
         Tarjeta(AzulClaro) { Text(asignatura.ejemplo, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold) }
 
@@ -92,7 +89,7 @@ fun PruebaScreen(navController: NavController, viewModel: PruebaViewModel, indic
         }
     }
 }
-//corrección automática
+//corrección
 @Composable
 fun ResultadoScreen(navController: NavController, viewModel: PruebaViewModel, indice: Int) {
     val estado by viewModel.estado.collectAsState()

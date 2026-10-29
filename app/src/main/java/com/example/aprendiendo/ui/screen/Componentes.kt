@@ -38,8 +38,7 @@ fun MpazTema(content: @Composable () -> Unit) {
     MaterialTheme(colorScheme = lightColorScheme(primary = Azul), content = content)
 }
 
-//  PIEZAS QUE SE REPITEN EN TODAS LAS PANTALLAS
-// Estructura de la pantalla título (con flecha para volver) + contenido que se puede bajar
+// Estructura de la pantalla: título con flecha para volver
 @Composable
 fun Pantalla(
     titulo: String,
@@ -64,7 +63,7 @@ fun Pantalla(
     }
 }
 
-// Campo de texto con su error  isError
+// Campo de texto con su error debajo (isError)
 @Composable
 fun CampoTexto(
     valor: String,
@@ -86,7 +85,6 @@ fun CampoTexto(
         modifier = Modifier.fillMaxWidth()
     )
 }
-
 // Botón azul grande
 @Composable
 fun BotonPrincipal(texto: String, habilitado: Boolean = true, onClick: () -> Unit) {
@@ -99,7 +97,6 @@ fun BotonPrincipal(texto: String, habilitado: Boolean = true, onClick: () -> Uni
         Text(texto, fontSize = 18.sp, fontWeight = FontWeight.Bold)
     }
 }
-
 // Caja redondeada de color. Si recibe onClick, se puede seleccionar
 @Composable
 fun Tarjeta(
@@ -111,8 +108,7 @@ fun Tarjeta(
     if (onClick != null) modifier = modifier.clickable { onClick() }
     Column(modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp), content = contenido)
 }
-
-// Botón de alternativa: cambia de color
+// cambia de color
 @Composable
 fun Opcion(texto: String, elegida: Boolean, modifier: Modifier, onClick: () -> Unit) {
     val colorFondo by animateColorAsState(
@@ -129,4 +125,15 @@ fun Opcion(texto: String, elegida: Boolean, modifier: Modifier, onClick: () -> U
     ) {
         Text(texto, fontSize = 16.sp, fontWeight = FontWeight.Bold)
     }
+}
+// Texto de color según el estado
+@Composable
+fun EtiquetaEstado(estado: String) {
+    val color = when (estado) {
+        "Completada", "Aprobada" -> Verde
+        "Rechazada" -> Rojo
+        "No asignada" -> Gris
+        else -> Azul          // "En curso" o "En revisión"
+    }
+    Text(estado, color = color, fontSize = 13.sp, fontWeight = FontWeight.Bold)
 }
