@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,7 +24,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// ---------------- COLORES Y TEMA ----------------
+// color y temas
 val Azul = Color(0xFF2F5BD3)
 val AzulClaro = Color(0xFFDDE7FD)
 val Gris = Color(0xFF5B6475)
@@ -37,7 +38,6 @@ val RojoClaro = Color(0xFFFDECEA)
 fun MpazTema(content: @Composable () -> Unit) {
     MaterialTheme(colorScheme = lightColorScheme(primary = Azul), content = content)
 }
-
 // Estructura de la pantalla: título con flecha para volver
 @Composable
 fun Pantalla(
@@ -62,7 +62,6 @@ fun Pantalla(
         contenido()
     }
 }
-
 // Campo de texto con su error debajo (isError)
 @Composable
 fun CampoTexto(
@@ -85,6 +84,7 @@ fun CampoTexto(
         modifier = Modifier.fillMaxWidth()
     )
 }
+
 // Botón azul grande
 @Composable
 fun BotonPrincipal(texto: String, habilitado: Boolean = true, onClick: () -> Unit) {
@@ -97,7 +97,7 @@ fun BotonPrincipal(texto: String, habilitado: Boolean = true, onClick: () -> Uni
         Text(texto, fontSize = 18.sp, fontWeight = FontWeight.Bold)
     }
 }
-// Caja redondeada de color. Si recibe onClick, se puede seleccionar
+
 @Composable
 fun Tarjeta(
     color: Color = FondoGris,
@@ -108,7 +108,8 @@ fun Tarjeta(
     if (onClick != null) modifier = modifier.clickable { onClick() }
     Column(modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp), content = contenido)
 }
-// cambia de color
+
+
 @Composable
 fun Opcion(texto: String, elegida: Boolean, modifier: Modifier, onClick: () -> Unit) {
     val colorFondo by animateColorAsState(
@@ -126,14 +127,21 @@ fun Opcion(texto: String, elegida: Boolean, modifier: Modifier, onClick: () -> U
         Text(texto, fontSize = 16.sp, fontWeight = FontWeight.Bold)
     }
 }
-// Texto de color según el estado
 @Composable
 fun EtiquetaEstado(estado: String) {
     val color = when (estado) {
-        "Completada", "Aprobada" -> Verde
+        "Completada", "Aprobada", "Aceptada", "Habilitada" -> Verde
         "Rechazada" -> Rojo
         "No asignada" -> Gris
-        else -> Azul          // "En curso" o "En revisión"
+        else -> Azul          // "En curso", "En revisión", "Pendiente", "Publicada"...
     }
     Text(estado, color = color, fontSize = 13.sp, fontWeight = FontWeight.Bold)
+}
+// Ícono de audio
+@Composable
+fun IconoAudio(texto: String = "Escuchar explicación") {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(Icons.AutoMirrored.Filled.VolumeUp, contentDescription = "Audio", tint = Azul, modifier = Modifier.size(32.dp))
+        Text("  $texto", color = Azul, fontWeight = FontWeight.Bold)
+    }
 }

@@ -46,9 +46,10 @@ fun ContenidoScreen(navController: NavController, indice: Int) {
     val asignatura = asignaturas[indice]
 
     Pantalla(titulo = "${asignatura.emoji} ${asignatura.nombre}", onVolver = { navController.popBackStack() }) {
-        Text("Objetivos asignados por tu profesor(a)", color = Gris)
+        Text("Objetivos asignados por tu docente", color = Gris)
         asignatura.objetivos.forEach { Text(it, fontSize = 17.sp, fontWeight = FontWeight.Bold) }
         Text(asignatura.oa, color = Gris, fontWeight = FontWeight.Bold)
+        IconoAudio()
         Text(asignatura.explicacion, fontSize = 20.sp, lineHeight = 28.sp)
         Text("Ejemplo guiado", fontWeight = FontWeight.Bold)
         Tarjeta(AzulClaro) { Text(asignatura.ejemplo, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold) }
@@ -66,6 +67,7 @@ fun PruebaScreen(navController: NavController, viewModel: PruebaViewModel, indic
     LaunchedEffect(indice) { viewModel.reiniciar() }
     Pantalla(titulo = asignatura.nombre, onVolver = { navController.popBackStack() }) {
         Text("Prueba final · ${asignatura.oa}", color = Gris)
+        IconoAudio("Escuchar instrucciones")
         asignatura.preguntas.forEachIndexed { n, pregunta ->
             Tarjeta {
                 Text("${n + 1}. ${pregunta.texto}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
